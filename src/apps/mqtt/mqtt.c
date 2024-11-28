@@ -1382,6 +1382,9 @@ mqtt_client_connect(mqtt_client_t *client, const ip_addr_t *ip_addr, u16_t port,
 #if LWIP_ALTCP && LWIP_ALTCP_TLS
   if (client_info->tls_config) {
     client->conn = altcp_tls_new(client_info->tls_config, IP_GET_TYPE(ip_addr));
+    if (client_info->server_name != NULL) {
+      mbedtls_ssl_set_hostname(altcp_tls_context(client->conn), client_info->server_name);
+    }
   } else
 #endif
   {
